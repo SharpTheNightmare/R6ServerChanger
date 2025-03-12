@@ -1,0 +1,49 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  DOTNETVERSION: "9.0.x"
+  APP: "R6ServerChanger"
+  SOLUTION: "./R6ServerChanger.sln"
+  BUILDOUTPUTPATH: "./src/R6ServerChanger/bin/Release/net9.0-windows"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Core SDK ${{ env.DOTNETVERSION }}
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNETVERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore ${{ env.SOLUTION }}
+
+      - name: Build
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
+
+      - name: Upload app build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP }}
+          path: ${{ env.BUILDOUTPUTPATH }}
+
+      - name: Test
+        run: dotnet test ${{ env.SOLUTION }} --no-restore --verbosity normal --logger trx --results-directory "TestResults"
+
+      - name: Upload TestResults build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: TestResults
