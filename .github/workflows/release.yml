@@ -64,13 +64,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           release_name: $
-          tag_name: ${{ github.ref }}
-          body: ${{ env.LOG }}
+          tag_name: ${{ github.release }}
           draft: false
           prerelease: false
 
       - name: ZIP release artifact
-        run: zip -r ${{ env.APP }}-$.zip ${{ env.BUILDOUTPUTPATH }}
+        run: zip -r ${{ env.APP }}$.zip ${{ env.BUILDOUTPUTPATH }}
 
       - name: GitHub release assets
         uses: actions/upload-release-asset@v1
@@ -79,6 +78,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.APP }}-$.zip
-          asset_name: ${{ env.APP }}-$.zip
+          asset_path: ${{ env.APP }}$.zip
+          asset_name: ${{ env.APP }}$.zip
           asset_content_type: application/zip
