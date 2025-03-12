@@ -35,10 +35,6 @@ jobs:
         id: version
         uses: battila7/get-version-action@v2
 
-      - name: Get previous release tag
-        id: previousTag
-        uses: sammcoe/get-previous-release-action@v1.0.3
-
       - name: Install dependencies
         run: dotnet restore ${{ env.SOLUTION }}
 
