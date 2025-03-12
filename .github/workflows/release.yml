@@ -39,7 +39,7 @@ jobs:
         run: dotnet restore ${{ env.SOLUTION }}
 
       - name: Build
-        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore /p:Version=${{ steps.version.outputs.version-without-v }}
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
 
       - name: Test
         run: dotnet test ${{ env.SOLUTION }} --no-restore --verbosity normal --logger trx --results-directory "TestResults"
@@ -47,7 +47,7 @@ jobs:
       - name: Upload app build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}
+          name: ${{ env.APP }}-$
           path: ${{ env.BUILDOUTPUTPATH }}
 
       - name: Upload TestResults build artifact
@@ -62,14 +62,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          release_name: ${{ steps.version.outputs.version-without-v }}
+          release_name: $
           tag_name: ${{ github.ref }}
           body: ${{ env.LOG }}
           draft: false
           prerelease: false
 
       - name: ZIP release artifact
-        run: zip -r ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip ${{ env.BUILDOUTPUTPATH }}
+        run: zip -r ${{ env.APP }}-$.zip ${{ env.BUILDOUTPUTPATH }}
 
       - name: GitHub release assets
         uses: actions/upload-release-asset@v1
@@ -78,6 +78,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip
-          asset_name: ${{ env.APP }}-${{ steps.version.outputs.version-without-v }}.zip
+          asset_path: ${{ env.APP }}-$.zip
+          asset_name: ${{ env.APP }}-$.zip
           asset_content_type: application/zip
