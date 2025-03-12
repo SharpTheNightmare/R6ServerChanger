@@ -13,7 +13,7 @@ env:
   DOTNETVERSION: "9.0.x"
   APP: "R6ServerChanger"
   SOLUTION: "./R6ServerChanger.sln"
-  BUILDOUTPUTPATH: "./src/R6ServerChanger/bin/Release/net9.0-windows"
+  BUILDOUTPUTPATH: "./R6ServerChanger/bin/Release/net9.0-windows"
 
 jobs:
   build:
