@@ -5,8 +5,9 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v[0-9]+.[0-9]+.[0-9]+.[0-9]+"
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
   
 env:
   DOTNETVERSION: "9.0.x"
