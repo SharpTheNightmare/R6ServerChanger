@@ -71,6 +71,8 @@ public partial class MainWindow : Window
     {
         R6ConfigPath = new ConfigParser($@"{SiegeDocPath}\{UUIDComboBox.SelectedItem}\GameSettings.ini");
         CurrentServer = R6ConfigPath.GetValue("ONLINE", "DataCenterHint");
+        if (ServerComboBox.IsEnabled == false)
+            ServerComboBox.IsEnabled = true;
         ServerComboBox.ItemsSource = ServerList;
         ServerComboBox.SelectedItem = CurrentServer.Contains("playfab/") ? CurrentServer.Split("/")[1] : CurrentServer;
     }

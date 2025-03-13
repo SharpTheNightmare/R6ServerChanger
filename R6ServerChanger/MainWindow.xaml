@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:R6ServerChanger"
         mc:Ignorable="d"
-        Title="Rainbow Six Siege Server Changer" Height="115" Width="340" Background="#282A36">
+        Title="Rainbow Six Siege Server Changer" Height="135" Width="340" Background="#282A36">
     <Window.Resources>
         <Style x:Key="ComboBoxTheme" TargetType="{x:Type ComboBox}">
             <Setter Property="Template">
@@ -54,12 +54,9 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-        </Grid.ColumnDefinitions>
-        <Label x:Name="UUIDLabel" Content="Put UUID here" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"/>
-        <ComboBox x:Name="ServerComboBox" HorizontalAlignment="Left" Margin="11,46,0,0" VerticalAlignment="Top" Width="219" Foreground="#F8F8F2" ItemsSource="{Binding ServerDataSource}" Style="{StaticResource ComboBoxTheme}" Grid.ColumnSpan="2">
-        </ComboBox>
-        <Button x:Name="SaveServer" Content="Save Server" HorizontalAlignment="Left" Margin="245,24,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"  Height="42" Width="70" Click="SaveServerButton_Click">
+        <Label x:Name="UUIDLabel" Content="Select UUID" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"/>
+        <ComboBox x:Name="ServerComboBox" IsEnabled="False" HorizontalAlignment="Left" Margin="11,67,0,0" VerticalAlignment="Top" Width="219" Foreground="#F8F8F2" ItemsSource="{Binding ServerDataSource}" Style="{StaticResource ComboBoxTheme}" Grid.ColumnSpan="2"/>
+        <Button x:Name="SaveServer" Content="Save Server" HorizontalAlignment="Left" Margin="245,67,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"  Height="22" Width="70" Click="SaveServerButton_Click">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Background" Value="#44475A"/>
@@ -80,7 +77,8 @@
                 </Style>
             </Button.Style>
         </Button>
-        <ComboBox x:Name="UUIDComboBox" HorizontalAlignment="Left" Margin="11,22,0,0" VerticalAlignment="Top" Width="219" Foreground="#F8F8F2" ItemsSource="{Binding UUIDDataSource}" Style="{StaticResource ComboBoxTheme}" SelectionChanged="UUIDComboBox_SelectionChanged"/>
+        <ComboBox x:Name="UUIDComboBox" HorizontalAlignment="Left" Margin="11,22,0,0" VerticalAlignment="Top" Width="219" Foreground="#F8F8F2" ItemsSource="{Binding UUIDDataSource}" Style="{StaticResource ComboBoxTheme}" SelectionChanged="UUIDComboBox_SelectionChanged" Grid.ColumnSpan="2"/>
+        <Label x:Name="ServerLabel" Content="Select Server" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"/>
     </Grid>
 
 </Window>
