@@ -6,7 +6,7 @@ name: Release
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+.[0-9]+"
+      - "v*.*.*"
   
 env:
   DOTNETVERSION: "9.0.x"
@@ -56,28 +56,12 @@ jobs:
           name: TestResults
           path: TestResults
 
-      - name: GitHub release
-        uses: actions/create-release@v1
-        id: release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          release_name: ${{ env.APP }} ${{ steps.version.outputs.version-without-v }}
-          tag_name: ${{ github.ref }}
-          body: ${{ env.LOG }}
-          draft: false
-          prerelease: false
-
       - name: ZIP release artifact
         run: tar -a -c -f ${{ env.APP }}.zip ${{ env.BUILDOUTPUTPATH }}
 
-      - name: GitHub release assets
-        uses: actions/upload-release-asset@v1
-        id: release_assets
+      - name: GitHub release
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.release.outputs.upload_url }}
-          asset_path: ${{ env.APP }}.zip
-          asset_name: ${{ env.APP }}.zip
-          asset_content_type: application/zip
+          files: ${{ env.APP }}.zip
