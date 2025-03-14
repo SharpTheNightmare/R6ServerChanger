@@ -64,6 +64,7 @@ jobs:
         with:
           release_name: ${{ env.APP }} ${{ steps.version.outputs.version-without-v }}
           tag_name: ${{ github.ref }}
+          body: ${{ env.LOG }}
           draft: false
           prerelease: false
 
