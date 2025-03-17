@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:R6ServerChanger"
         mc:Ignorable="d"
-        Title="Rainbow Six Siege Server Changer" Height="135" Width="340" Background="#282A36">
+        Title="Rainbow Six Siege Server Changer" Height="160" Width="340" Background="#282A36" ResizeMode="NoResize">
     <Window.Resources>
         <Style x:Key="ComboBoxTheme" TargetType="{x:Type ComboBox}">
             <Setter Property="Template">
@@ -55,8 +55,8 @@
     </Window.Resources>
     <Grid>
         <Label x:Name="UUIDLabel" Content="Select UUID" HorizontalAlignment="Left" Margin="11,0,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"/>
-        <ComboBox x:Name="ServerComboBox" IsEnabled="False" HorizontalAlignment="Left" Margin="11,67,0,0" VerticalAlignment="Top" Width="219" Foreground="#F8F8F2" ItemsSource="{Binding ServerDataSource}" Style="{StaticResource ComboBoxTheme}" Grid.ColumnSpan="2"/>
-        <Button x:Name="SaveServer" Content="Save Server" HorizontalAlignment="Left" Margin="245,67,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"  Height="22" Width="70" Click="SaveServerButton_Click">
+        <ComboBox x:Name="ServerComboBox" IsEnabled="False" HorizontalAlignment="Left" Margin="11,67,0,0" VerticalAlignment="Top" Width="219" Foreground="#F8F8F2" ItemsSource="{Binding ServerDataSource}" Style="{StaticResource ComboBoxTheme}" Grid.ColumnSpan="2" SelectionChanged="ServerComboBox_SelectionChanged"/>
+        <Button x:Name="SaveServer" Content="Save Server" HorizontalAlignment="Left" Margin="245,67,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"  Height="22" Width="70" Click="SaveServerButton_Click" IsEnabled ="False">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Background" Value="#44475A"/>
@@ -79,6 +79,29 @@
         </Button>
         <ComboBox x:Name="UUIDComboBox" HorizontalAlignment="Left" Margin="11,22,0,0" VerticalAlignment="Top" Width="219" Foreground="#F8F8F2" ItemsSource="{Binding UUIDDataSource}" Style="{StaticResource ComboBoxTheme}" SelectionChanged="UUIDComboBox_SelectionChanged" Grid.ColumnSpan="2"/>
         <Label x:Name="ServerLabel" Content="Select Server" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"/>
+        <Label x:Name="StaticStatusLabel" Content="Status:" HorizontalAlignment="Left" Margin="11,91,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"/>
+        <Label x:Name="StatusLabel" Content="Idle..." HorizontalAlignment="Left" Margin="49,91,0,0" VerticalAlignment="Top" Foreground="#ffbf00" FontWeight="Bold"/>
+        <Button x:Name="OpenConfig" Content="Open Config" HorizontalAlignment="Left" Margin="245,22,0,0" VerticalAlignment="Top" Foreground="#F8F8F2"  Height="22" Width="70" Click="OpenConfig_Click" IsEnabled ="False">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="#44475A"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#6272A4"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 
 </Window>

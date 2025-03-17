@@ -1,16 +1,8 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Salaros;
 using Salaros.Configuration;
 
 namespace R6ServerChanger;
@@ -20,6 +12,10 @@ namespace R6ServerChanger;
 /// </summary>
 public partial class MainWindow : Window
 {
+    private BrushConverter bc = new();
+
+    private readonly BackgroundWorker statusWorker = new();
+
     public List<string> ServerList =
     [
         "default",
@@ -48,6 +44,7 @@ public partial class MainWindow : Window
         InitializeComponent();
         SiegeUser = Directory.GetDirectories(SiegeDocPath).Select(d => new DirectoryInfo(d).Name);
         UUIDComboBox.ItemsSource = SiegeUser;
+        statusWorker.RunWorkerCompleted += Status_RunWorkerCompleted;
     }
 
     private void SaveServerButton_Click(object sender, RoutedEventArgs e)
@@ -56,14 +53,15 @@ public partial class MainWindow : Window
             MessageBox.Show("Please select a UUID", "Oops!", MessageBoxButton.OK, MessageBoxImage.Warning);
 
         if (R6ConfigPath is null)
-            MessageBox.Show("Failed getting GameSettings.ini", "Oops!", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show("Failed to get GameSettings.ini", "Oops!", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-        if ((string)UUIDComboBox.SelectedItem != null && R6ConfigPath is not null)
+        if ((string?)UUIDComboBox.SelectedItem != null && R6ConfigPath is not null)
         {
             if (ServerComboBox.SelectedItem as string is not null)
                 R6ConfigPath.SetValue("ONLINE", "DataCenterHint", ServerComboBox.SelectedItem as string == "default" ? ServerComboBox.SelectedItem as string : $@"playfab/{ServerComboBox.SelectedItem}");
 
             R6ConfigPath.Save();
+            statusWorker.RunWorkerAsync();
         }
     }
 
@@ -73,7 +71,47 @@ public partial class MainWindow : Window
         CurrentServer = R6ConfigPath.GetValue("ONLINE", "DataCenterHint");
         if (ServerComboBox.IsEnabled == false)
             ServerComboBox.IsEnabled = true;
+        if (OpenConfig.IsEnabled == false)
+            OpenConfig.IsEnabled = true;
+        if (SaveServer.IsEnabled == false)
+            SaveServer.IsEnabled = true;
         ServerComboBox.ItemsSource = ServerList;
         ServerComboBox.SelectedItem = CurrentServer.Contains("playfab/") ? CurrentServer.Split("/")[1] : CurrentServer;
+    }
+
+    private void Status_DoWork(object? sender, DoWorkEventArgs e)
+    {
+    }
+
+    private void Status_RunWorkerCompleted(object? sender, RunWorkerCompletedEventArgs e)
+    {
+        if (e.Error != null)
+        {
+            StatusLabel.Content = "Server change failed!";
+            StatusLabel.Foreground = Brushes.Red;
+        }
+        else
+        {
+            StatusLabel.Content = "Server changed!";
+            StatusLabel.Foreground = Brushes.Green;
+        }
+    }
+
+    private void ServerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        StatusLabel.Content = "Idle...";
+        StatusLabel.Foreground = bc.ConvertFrom("#ffbf00") as Brush;
+    }
+
+    private void OpenConfig_Click(object sender, RoutedEventArgs e)
+    {
+        if (R6ConfigPath is null)
+            MessageBox.Show("Failed to get GameSettings.ini", "Oops!", MessageBoxButton.OK, MessageBoxImage.Warning);
+        else
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+            {
+                FileName = $@"{SiegeDocPath}\{UUIDComboBox.SelectedItem}\GameSettings.ini",
+                UseShellExecute = true
+            });
     }
 }
