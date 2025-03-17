@@ -18,7 +18,6 @@ env:
 jobs:
   build:
     runs-on: windows-latest
-    permissions: write-all
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -60,10 +59,3 @@ jobs:
         with:
           name: TestResults
           path: TestResults
-
-      - name: GitHub release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: ./out/${{ env.APP }}.zip
