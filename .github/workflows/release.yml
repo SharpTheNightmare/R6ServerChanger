@@ -44,11 +44,16 @@ jobs:
       - name: Test
         run: dotnet test ${{ env.SOLUTION }} --no-restore --verbosity normal --logger trx --results-directory "TestResults"
 
+      - name: Publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run: dotnet publish --configuration Release --output ./out
+          
       - name: Upload app build artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.APP }}
-          path: ${{ env.BUILDOUTPUTPATH }}
+          path: ${{ env.PACKOUTPUTPATH }}
 
       - name: Upload TestResults build artifact
         uses: actions/upload-artifact@v4
@@ -56,12 +61,9 @@ jobs:
           name: TestResults
           path: TestResults
 
-      - name: ZIP release artifact
-        run: tar -a -c -f ${{ env.APP }}.zip ${{ env.BUILDOUTPUTPATH }}
-
       - name: GitHub release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: ${{ env.APP }}.zip
+          files: ./out/${{ env.APP }}.zip
